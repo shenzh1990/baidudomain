@@ -6,7 +6,6 @@ import (
 	"encoding/hex"
 	"io/ioutil"
 	"net/http"
-	"strings"
 )
 
 func GetHmacCode(value string, key string) string {
@@ -15,9 +14,14 @@ func GetHmacCode(value string, key string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func GetIp() (string, error) {
+/**
+* type ==4 获取ipv4
+* type ==6 获取ipv6
+* type ==test  v4优先返回v4地址 否则返回v6
+**/
+func GetIp(t string) (string, error) {
 	client := &http.Client{}
-	req, _ := http.NewRequest(http.MethodGet, "https://ip.cn", nil)
+	req, _ := http.NewRequest(http.MethodGet, "https://"+t+".ipw.cn", nil)
 
 	response, err := client.Do(req)
 	if err != nil {
@@ -27,9 +31,5 @@ func GetIp() (string, error) {
 	if err != nil {
 		return "", err
 	}
-	htmlstr := string(data)
-	start := strings.Index(htmlstr, "<code>") + 6
-	end := strings.Index(htmlstr, "</code>")
-	ip := string([]byte(htmlstr)[start:end])
-	return ip, nil
+	return string(data), nil
 }

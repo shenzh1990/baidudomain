@@ -26,7 +26,7 @@ func domain() {
 		"https://bcd.baidubce.com",
 		"v1",
 	}
-	nowip, err := utils.GetIp()
+	nowip, err := utils.GetIp("4")
 	domainController := controller.DomainController{
 		handler,
 		"qinyule.com",
